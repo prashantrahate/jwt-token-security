@@ -6,9 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.security.model.AppUser;
-import net.security.model.LoginRequest;
-import net.security.model.Token;
+import net.security.model.*;
 import net.security.services.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
@@ -26,10 +26,9 @@ class AuthControllerTest {
 
   @Test
   void registerUser_shouldReturnSavedUser() throws Exception {
-    AppUser appUser = new AppUser("user1@example.com", "user1", "12345", "ROLE_USER");
-    AppUser createdUser = new AppUser("user1@example.com", "user1", "12345", "ROLE_USER");
+    AppUserCreate appUser = new AppUserCreate("user1@example.com", "user1", "12345", UserRole.USER);
+    AppUser createdUser = new AppUser("user1@example.com", "user1", UserRole.USER);
     createdUser.setId(1L);
-    createdUser.setCreatedBy("system");
 
     when(authService.registerUser(appUser)).thenReturn(createdUser);
 
@@ -46,7 +45,7 @@ class AuthControllerTest {
   @Test
   void loginUser_returnGeneratedToken() throws Exception {
     LoginRequest loginRequest = new LoginRequest("user1", "12345");
-    Token generatedToken = new Token("token", "Bearer", 3600L, "user1", null);
+    Token generatedToken = new Token("token", 3600L);
 
     when(authService.generateToken(loginRequest)).thenReturn(generatedToken);
 

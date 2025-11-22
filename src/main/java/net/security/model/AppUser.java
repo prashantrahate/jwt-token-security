@@ -18,9 +18,9 @@ public class AppUser implements Serializable {
   private Long id;
   @Email private String email;
   @NotBlank private String username;
-  @NotBlank private String password;
-  private String role;
-  private String createdBy; // USER, SYSTEM
+//  @NotBlank private String password; // not required, this class is used to return the response only
+  private UserRole role;
+  private String createdBy = "SYSTEM"; // {USER_NAME}, SYSTEM
 
   @DateTimeFormat(pattern = "dd/MMM/yyyyThh:mm:ss")
   private LocalDateTime createdAt;
@@ -30,10 +30,9 @@ public class AppUser implements Serializable {
   @DateTimeFormat(pattern = "dd/MMM/yyyyThh:mm:ss")
   private LocalDateTime updatedAt;
 
-  public AppUser(String email, String username, String password, String role) {
+  public AppUser(String email, String username, UserRole role) {
     this.email = email;
     this.username = username;
-    this.password = password;
     this.role = role;
     this.createdAt = LocalDateTime.now();
   }

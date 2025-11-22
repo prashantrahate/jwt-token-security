@@ -2,6 +2,7 @@ package net.security.controller;
 
 import jakarta.validation.Valid;
 import net.security.model.AppUser;
+import net.security.model.AppUserCreate;
 import net.security.model.LoginRequest;
 import net.security.model.Token;
 import net.security.services.AuthService;
@@ -22,7 +23,7 @@ public class AuthController {
   // /register
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
-  public AppUser registerUser(@Valid @RequestBody AppUser user) {
+  public AppUser registerUser(@Valid @RequestBody AppUserCreate user) {
     return authService.registerUser(user);
   }
 

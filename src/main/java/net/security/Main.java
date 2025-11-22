@@ -3,6 +3,7 @@ package net.security;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import net.security.entities.AppUserEntity;
+import net.security.model.UserRole;
 import net.security.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +31,7 @@ public class Main {
         AppUserEntity user = new AppUserEntity();
         user.setUsername("admin");
         user.setPassword(passwordEncoder.encode("admin"));
-        user.setRole("ROLE_ADMIN");
+        user.addRole(UserRole.ADMIN);
         user.setCreatedBy("system");
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedBy("system");

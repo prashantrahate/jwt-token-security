@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.security.adaptors.AppUserMapper;
 import net.security.entities.AppUserEntity;
 import net.security.model.AppUser;
+import net.security.model.AppUserCreate;
 import net.security.model.LoginRequest;
 import net.security.model.Token;
 import net.security.repositories.AppUserRepository;
@@ -41,27 +42,26 @@ public class AuthServiceImpl implements AuthService {
 
   @Transactional
   @Override
-  public AppUser registerUser(AppUser user) {
+  public AppUser registerUser(AppUserCreate user) {
     if (appUserRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail()).isPresent()) {
       throw new RuntimeException(
           "Username or email already exists. Please choose a different username or email.");
     }
 
+    // Create an entity from input object via mapper
     AppUserEntity userEntity = appUserMapper.toEntity(user);
-    userEntity.setId(null); // Do not use id for registration, otherwise it will cause conflicts.
-    userEntity.setCreatedBy("user");
-    userEntity.setUpdatedBy("user");
+    // Set audit fields to entity
+    userEntity.setCreatedBy(user.getUsername());
     userEntity.setCreatedAt(LocalDateTime.now());
-    userEntity.setUpdatedAt(LocalDateTime.now());
+    // Update password in encoded format
     userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 
+    // Save user into DB
     AppUserEntity savedUser = appUserRepository.save(userEntity);
     log.info("User registered: {}", userEntity.getUsername());
 
-    AppUser registeredUser = appUserMapper.toModel(savedUser);
-    registeredUser.setPassword("***");
-
-    return registeredUser;
+    // Create a model again from DB and return
+      return appUserMapper.toModel(savedUser);
   }
 
   @Override

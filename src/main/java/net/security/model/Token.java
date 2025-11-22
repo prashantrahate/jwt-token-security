@@ -12,8 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 public class Token implements Serializable {
     private String token;
-    private String type; // Bearer
+    private String type = "Bearer"; // Bearer
     private Long expiresIn;
-    private String username;
-    private List<String> roles;
+
+    public Token(String token, Long expiresIn) {
+        this.token = token;
+        this.expiresIn = expiresIn;
+    }
 }
