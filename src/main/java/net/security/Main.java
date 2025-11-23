@@ -32,10 +32,8 @@ public class Main {
         user.setUsername("admin");
         user.setPassword(passwordEncoder.encode("admin"));
         user.addRole(UserRole.ADMIN);
-        user.setCreatedBy("system");
+        user.setCreatedBy("SYSTEM");
         user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedBy("system");
-        user.setUpdatedAt(LocalDateTime.now());
 
         appUserRepository.save(user);
     }

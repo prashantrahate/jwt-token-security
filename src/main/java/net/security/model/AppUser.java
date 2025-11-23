@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @ToString
 @Data
@@ -19,7 +20,7 @@ public class AppUser implements Serializable {
   @Email private String email;
   @NotBlank private String username;
 //  @NotBlank private String password; // not required, this class is used to return the response only
-  private UserRole role;
+  private List<UserRole> roles;
   private String createdBy = "SYSTEM"; // {USER_NAME}, SYSTEM
 
   @DateTimeFormat(pattern = "dd/MMM/yyyyThh:mm:ss")
@@ -30,10 +31,10 @@ public class AppUser implements Serializable {
   @DateTimeFormat(pattern = "dd/MMM/yyyyThh:mm:ss")
   private LocalDateTime updatedAt;
 
-  public AppUser(String email, String username, UserRole role) {
+  public AppUser(String email, String username, List<UserRole> roles) {
     this.email = email;
     this.username = username;
-    this.role = role;
+    this.roles = roles;
     this.createdAt = LocalDateTime.now();
   }
 }

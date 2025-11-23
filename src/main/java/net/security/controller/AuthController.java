@@ -1,10 +1,7 @@
 package net.security.controller;
 
 import jakarta.validation.Valid;
-import net.security.model.AppUser;
-import net.security.model.AppUserCreate;
-import net.security.model.LoginRequest;
-import net.security.model.Token;
+import net.security.model.*;
 import net.security.services.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;

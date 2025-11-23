@@ -2,6 +2,7 @@ package net.security.configurations;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import net.security.adaptors.AppUserMapper;
 import net.security.filters.JwtAuthFilter;
 import net.security.repositories.AppUserRepository;
 import net.security.services.UserServiceImpl;
@@ -25,11 +26,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final AppUserRepository appUserRepository;
+  private final AppUserMapper appUserMapper;
   private final JwtAuthFilter jwtAuthFilter;
 
-  public SecurityConfig(AppUserRepository appUserRepository, JwtAuthFilter jwtAuthFilter) {
+  public SecurityConfig(AppUserRepository appUserRepository, AppUserMapper appUserMapper, JwtAuthFilter jwtAuthFilter) {
     this.appUserRepository = appUserRepository;
-    this.jwtAuthFilter = jwtAuthFilter;
+      this.appUserMapper = appUserMapper;
+      this.jwtAuthFilter = jwtAuthFilter;
   }
 
   @Bean
@@ -51,10 +54,10 @@ public class SecurityConfig {
     return http.build();
   }
 
-  @Bean
-  public UserDetailsService userDetailsService() {
-    return new UserServiceImpl(appUserRepository);
-  }
+//  @Bean
+//  public UserDetailsService userDetailsService() {
+//    return new UserServiceImpl(appUserMapper, appUserRepository);
+//  }
 
   @Bean
   public AuthenticationManager authenticationManager(

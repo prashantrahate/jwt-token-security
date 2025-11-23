@@ -26,8 +26,8 @@ class AuthControllerTest {
 
   @Test
   void registerUser_shouldReturnSavedUser() throws Exception {
-    AppUserCreate appUser = new AppUserCreate("user1@example.com", "user1", "12345", UserRole.USER);
-    AppUser createdUser = new AppUser("user1@example.com", "user1", UserRole.USER);
+    AppUserCreate appUser = new AppUserCreate("user1@example.com", "user1", "12345");
+    AppUser createdUser = new AppUser("user1@example.com", "user1", List.of(UserRole.USER));
     createdUser.setId(1L);
 
     when(authService.registerUser(appUser)).thenReturn(createdUser);

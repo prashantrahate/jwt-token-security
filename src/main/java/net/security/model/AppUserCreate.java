@@ -17,13 +17,10 @@ public class AppUserCreate implements Serializable {
   @Email private String email;
   @NotBlank private String username;
   @NotBlank private String password;
-  @Enumerated
-  private UserRole role;
 
-  public AppUserCreate(String email, String username, String password, UserRole role) {
+  public AppUserCreate(String email, String username, String password) {
     this.email = email;
     this.username = username;
     this.password = password;
-    this.role = role;
   }
 }

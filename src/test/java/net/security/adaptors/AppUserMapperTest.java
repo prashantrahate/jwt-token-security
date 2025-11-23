@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,12 +17,12 @@ class AppUserMapperTest {
 
   @Test
   void toEntityTest() {
-    AppUser appUser = new AppUser("test@example.com", "testuser", UserRole.GUEST);
+    AppUser appUser = new AppUser("test@example.com", "testuser", List.of(UserRole.GUEST));
     AppUserEntity userEntity = userMapper.toEntity(appUser);
     assertNotNull(userEntity);
     assertEquals(appUser.getEmail(), userEntity.getEmail());
     assertEquals(appUser.getUsername(), userEntity.getUsername());
-    assertEquals(appUser.getRole(), appUser.getRole());
+    assertEquals(appUser.getRoles(), appUser.getRoles());
   }
 
   @Test
@@ -31,7 +32,7 @@ class AppUserMapperTest {
     userEntity.setEmail("test@example.com");
     userEntity.setUsername("testuser");
     userEntity.setPassword("testpassword");
-    userEntity.setRole("ROLE_USER");
+    userEntity.setRoles(List.of(UserRole.GUEST));
     userEntity.setCreatedBy("system");
     userEntity.setCreatedAt(LocalDateTime.now());
     userEntity.setUpdatedBy("system");
@@ -42,7 +43,7 @@ class AppUserMapperTest {
     assertEquals(appUser.getId(), userEntity.getId());
     assertEquals(userEntity.getEmail(), appUser.getEmail());
     assertEquals(userEntity.getUsername(), appUser.getUsername());
-    assertEquals(userEntity.getRole(), appUser.getRole());
+    assertEquals(userEntity.getRoles(), appUser.getRoles());
     assertEquals(userEntity.getCreatedBy(), appUser.getCreatedBy());
     assertEquals(userEntity.getCreatedAt(), appUser.getCreatedAt());
     assertEquals(userEntity.getUpdatedBy(), appUser.getUpdatedBy());
