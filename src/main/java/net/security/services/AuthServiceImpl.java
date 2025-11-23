@@ -10,6 +10,7 @@ import net.security.model.LoginRequest;
 import net.security.model.Token;
 import net.security.repositories.AppUserRepository;
 import net.security.utils.JwtUtil;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -64,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
       return appUserMapper.toModel(savedUser);
   }
 
+  @Cacheable(value = "tokenCache", key = "#user.username")
   @Override
   public Token generateToken(LoginRequest user) {
     authenticationManager.authenticate(

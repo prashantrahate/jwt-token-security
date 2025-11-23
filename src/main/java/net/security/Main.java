@@ -2,6 +2,7 @@ package net.security;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import net.security.entities.AppUserEntity;
 import net.security.model.UserRole;
 import net.security.repositories.AppUserRepository;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class Main {

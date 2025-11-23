@@ -22,3 +22,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create
+
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
