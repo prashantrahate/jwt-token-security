@@ -1,14 +1,11 @@
 package net.security.entities;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.security.model.UserRole;
@@ -29,10 +26,12 @@ public class AppUserEntity implements UserDetails, Serializable {
   private String email;
   private String username;
   private String password;
+
   @Enumerated(EnumType.STRING)
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
   private List<UserRole> roles = new ArrayList<>();
+
   private String createdBy; // USER, SYSTEM
 
   @DateTimeFormat(pattern = "dd/MMM/yyyyThh:mm:ss")
@@ -50,8 +49,8 @@ public class AppUserEntity implements UserDetails, Serializable {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return roles.stream()
-            .map(role -> new SimpleGrantedAuthority(role.name()))
-            .toList();
+        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name().toUpperCase()))
+        .toList();
   }
 
   @Override
@@ -74,7 +73,7 @@ public class AppUserEntity implements UserDetails, Serializable {
     return UserDetails.super.isEnabled();
   }
 
-    public void addRole(UserRole userRole) {
-      this.roles.add(userRole);
-    }
+  public void addRole(UserRole userRole) {
+    this.roles.add(userRole);
+  }
 }

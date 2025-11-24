@@ -1,8 +1,9 @@
 package net.security.services;
 
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
-import net.security.adaptors.AppUserMapper;
+import net.security.mappers.AppUserMapper;
 import net.security.entities.AppUserEntity;
 import net.security.model.AppUser;
 import net.security.model.AppUserCreate;
@@ -13,12 +14,8 @@ import net.security.utils.JwtUtil;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -65,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
       return appUserMapper.toModel(savedUser);
   }
 
-  @Cacheable(value = "tokenCache", key = "#user.username")
+  @Cacheable(value = "token", key = "#user.username")
   @Override
   public Token generateToken(LoginRequest user) {
     authenticationManager.authenticate(

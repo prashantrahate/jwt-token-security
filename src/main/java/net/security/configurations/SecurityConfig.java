@@ -2,15 +2,21 @@ package net.security.configurations;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import net.security.adaptors.AppUserMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import net.security.filters.JwtAuthFilter;
-import net.security.repositories.AppUserRepository;
-import net.security.services.UserServiceImpl;
+import net.security.handlers.CustomAccessDeniedHandler;
+import net.security.handlers.CustomAuthenticationEntryPoint;
+import net.security.handlers.exceptions.UnauthorizedUser;
+import net.security.utils.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,16 +29,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-  private final AppUserRepository appUserRepository;
-  private final AppUserMapper appUserMapper;
   private final JwtAuthFilter jwtAuthFilter;
+  private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-  public SecurityConfig(AppUserRepository appUserRepository, AppUserMapper appUserMapper, JwtAuthFilter jwtAuthFilter) {
-    this.appUserRepository = appUserRepository;
-      this.appUserMapper = appUserMapper;
-      this.jwtAuthFilter = jwtAuthFilter;
+  public SecurityConfig(
+      JwtAuthFilter jwtAuthFilter, CustomAccessDeniedHandler customAccessDeniedHandler) {
+    this.jwtAuthFilter = jwtAuthFilter;
+    this.customAccessDeniedHandler = customAccessDeniedHandler;
   }
 
   @Bean
@@ -46,18 +52,23 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
-            auth -> auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
+            auth ->
+                auth.requestMatchers(HttpMethod.POST, "/users/*/roles")
+                    .hasRole(Constants.ADMIN)
+                    .requestMatchers("/auth/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .exceptionHandling(
+            ex ->
+                ex.accessDeniedHandler(customAccessDeniedHandler)
+                    .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
         .httpBasic(withDefaults());
 
     http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
-
-//  @Bean
-//  public UserDetailsService userDetailsService() {
-//    return new UserServiceImpl(appUserMapper, appUserRepository);
-//  }
 
   @Bean
   public AuthenticationManager authenticationManager(

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import net.security.services.UserServiceImpl;
+import net.security.utils.Constants;
 import net.security.utils.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,9 +31,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-    String authHeader = request.getHeader("Authorization");
+    String authHeader = request.getHeader(Constants.AUTHORIZATION);
     String token = null, username = null;
-    if (authHeader != null && authHeader.startsWith("Bearer")) {
+    if (authHeader != null && authHeader.startsWith(Constants.BEARER)) {
       token = authHeader.substring(7);
       username = jwtUtil.extractUsername(token);
     }

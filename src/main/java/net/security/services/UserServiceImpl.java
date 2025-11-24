@@ -1,12 +1,10 @@
 package net.security.services;
 
-import net.security.adaptors.AppUserMapper;
+import net.security.mappers.AppUserMapper;
 import net.security.entities.AppUserEntity;
 import net.security.model.AppUser;
 import net.security.model.UserRoleCreate;
 import net.security.repositories.AppUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,15 +1,14 @@
-package net.security.adaptors;
+package net.security.mappers;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import net.security.entities.AppUserEntity;
 import net.security.model.AppUser;
 import net.security.model.UserRole;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class AppUserMapperTest {
 

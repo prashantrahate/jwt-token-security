@@ -1,4 +1,4 @@
-package net.security.adaptors;
+package net.security.mappers;
 
 import net.security.configurations.GlobalMapperConfig;
 import net.security.entities.AppUserEntity;
@@ -19,6 +19,7 @@ public interface AppUserMapper {
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   void updateEntityFromModel(AppUser appUser, @MappingTarget AppUserEntity appUserEntity);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateRolesEntityFromModel(UserRoleCreate userRoleCreate, @MappingTarget AppUserEntity appUserEntity);
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void updateRolesEntityFromModel(
+      UserRoleCreate userRoleCreate, @MappingTarget AppUserEntity appUserEntity);
 }
