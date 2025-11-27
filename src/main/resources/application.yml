@@ -12,13 +12,11 @@ spring:
 
   datasource:
     url: jdbc:h2:tcp://localhost:9001/~/Documents/PR/SecurityDB
-#    url: jdbc:h2:file:~/Documents/PR/SecurityDB
-    driver-class-name: org.h2.Driver
+    #    url: jdbc:h2:file:~/Documents/PR/SecurityDB
     username: sa
     password: ""
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
       ddl-auto: create

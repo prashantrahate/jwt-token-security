@@ -1,13 +1,19 @@
 package net.security.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Map;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public record FailureResponse(String message, String error, Map<String, Object> errors) implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record FailureResponse(String message, String error, Map<String, Object> errors)
+    implements Serializable {
+
+  public FailureResponse(String message) {
+    this(message, null, null);
+  }
+
   public FailureResponse(String message, String error) {
-    this(message, error, Map.of());
+    this(message, error, null);
   }
 
   public FailureResponse(String message, Map<String, Object> errors) {

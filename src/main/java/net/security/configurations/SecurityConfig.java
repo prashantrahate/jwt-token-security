@@ -33,12 +33,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final JwtAuthFilter jwtAuthFilter;
-  private final CustomAccessDeniedHandler customAccessDeniedHandler;
+//  private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
   public SecurityConfig(
-      JwtAuthFilter jwtAuthFilter, CustomAccessDeniedHandler customAccessDeniedHandler) {
+      JwtAuthFilter jwtAuthFilter) {
     this.jwtAuthFilter = jwtAuthFilter;
-    this.customAccessDeniedHandler = customAccessDeniedHandler;
   }
 
   @Bean
@@ -61,8 +60,8 @@ public class SecurityConfig {
                     .authenticated())
         .exceptionHandling(
             ex ->
-                ex.accessDeniedHandler(customAccessDeniedHandler)
-                    .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
+//                ex.accessDeniedHandler(customAccessDeniedHandler)
+                    ex.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
         .httpBasic(withDefaults());
 
     http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
